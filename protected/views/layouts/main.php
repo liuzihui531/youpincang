@@ -18,70 +18,46 @@
         <script src="/static/images/mainvisual.js"></script>
     </head>
     <body>
+        <?php
+        $criteria = new CDbCriteria();
+        $criteria->limit = 10;
+        $criteria->compare('pid', $this->news_id);
+        $news_list = NewsCategory::model()->findAll($criteria);
+        $news_model = News::model();
+        ?>
         <div id="header" class="gnbNavi" >
             <div id="gnb" style="width:1200px">
                 <h1 style="position:absolute;z-index:4;top:16px;"><a href="index.php"><img src="/static/images/logo.png" alt="MiniSo"></a></h1>
-                <div id="navigation" style="padding-left:427px;width:673px">
+                <div id="navigation" style="padding-left:427px;width:773px">
                     <ul class="depth1Ul">
                         <li class="depth1">
                             <a href="index.php" class="menu1"><img src="/static/images/gnb_1_off.gif" alt="Home"/></a>
                         </li>
-                        <li class="depth1">
-                            <a href="getinfo.php?top=1" class="menu1"><img src="/static/images/gnb_2_off.gif" alt="Brand" /></a>
-                            <ul class="depth2Ul depth2Menu2" style="left:0; text-indent:">
-                                <li><a href="getinfo.php?cid=186&top=1">品牌简介</a></li>
-                                <li><a href="getinfo.php?cid=215&top=1">品牌诞生</a></li>
-                                <li><a href="getinfo.php?cid=236&top=1">品牌使命</a></li>                         
-                                <li><a href="getinfo.php?cid=229&top=1">品牌哲学</a></li>                                            
-                                <li><a href="getinfo.php?cid=218&top=1">品牌生活</a></li>
-                                <li><a href="getinfo.php?cid=231&top=1">全球采购</a></li>
-                                <li><a href="getinfo.php?cid=232&top=1">环保使命</a></li>
-                                <li><a href="getinfo.php?cid=233&top=1">发展历程</a></li>    
-                                <li><a href="getinfo.php?cid=222&top=1">创始人</a></li>
-                                <li><a href="getinfo.php?cid=239&top=1">设计师团队</a></li>                            
-                            </ul>
-                        </li>
-                        <li class="depth1">
-                            <a href="getinfo.php?top=4" class="menu1"><img src="/static/images/gnb_3_off.gif" alt="Products"/></a>
-                            <ul class="depth2Ul depth2Menu3" style="left:0">
-                                <li><a href="getinfo.php?cid=192&top=4">创意家居</a></li>
-                                <li><a href="getinfo.php?cid=191&top=4">生活百货</a></li>
-                                <li><a href="getinfo.php?cid=205&top=4">健康美容</a></li>
-                                <li><a href="getinfo.php?cid=206&top=4">饰品系列</a></li>
-                                <li><a href="getinfo.php?cid=207&top=4">文体礼品</a></li>
-                                <li><a href="getinfo.php?cid=208&top=4">季节性产品</a></li>
-                                <li><a href="getinfo.php?cid=209&top=4">精品包饰</a></li>
-                                <li><a href="getinfo.php?cid=210&top=4">数码配件</a></li>
-                                <li><a href="getinfo.php?cid=234&top=4">食品系列</a></li>
-                                <li><a href="getinfo.php?cid=235&top=4">纺织品系列</a></li>                         
-                            </ul>
-                        </li>
-                        <li class="depth1">
-                            <a href="getinfo.php?top=2" class="menu1"><img src="/static/images/gnb_4_off.gif" alt="News"/></a>
-                            <ul class="depth2Ul depth2Menu4" style="left:0">
-                                <!--<li><a href="getinfo.php?cid=189&top=2">新闻</a></li>-->
-                                <li><a href="getinfo.php?cid=221&top=2">媒体报道</a></li>
-                                <li><a href="getinfo.php?cid=242&top=3">品牌资讯</a></li>
-                            </ul>
-                        </li>
-                        <li class="depth1">
-                            <a href="getinfo.php?top=3" class="menu1"><img src="/static/images/gnb_5_off.gif" alt="Store"/></a>
-                            <ul class="depth2Ul depth2Menu5" style="left:-2">
-                                <li><a href="getinfo.php?cid=193&top=3">店铺展示</a></li>
-                                <li><a href="getinfo.php?cid=225&top=3">全球店铺分布</a></li>   
-                                <li><a href="getinfo.php?cid=243&top=3">全球店铺开发</a></li>
-                                <li><a href="getinfo.php?cid=244&top=3">中国店铺开发</a></li>  			
-                                <li><a href="getinfo.php?cid=238&top=3">店铺合作政策</a></li>                       
-                            </ul>
-                        </li>
-                        <li class="depth1">
-                            <a href="getinfo.php?top=195" class="menu1"><img src="/static/images/gnb_6_off.gif" alt="Contac"/></a>
-                            <ul class="depth2Ul depth2Menu6" style="left:-2">
-                                <li><a href="getinfo.php?cid=226&top=195">合作机会</a></li>
-                                <li><a href="http://companyadc.51job.com/companyads/2015/gz/baoyang0415_8712wh/index.htm" target="_blank" >工作机会</a></li>	
-                                <li><a href="getinfo.php?cid=223&top=195">供应商频道</a></li>       			
-                            </ul>
-                        </li>
+                        <?php $index = 2; ?>
+                        <?php foreach ($this->top_nav as $k => $v): ?>
+                            <li class="depth1">
+                                <a href="#" class="menu1"><img src="/static/images/gnb_<?php echo $index; ?>_off.gif" alt="Brand" /></a>
+                                <ul class="depth2Ul depth2Menu2" style="left:0; text-indent:">
+                                    <?php if ($k == $this->news_id): ?>
+                                        <?php foreach ($news_list as $kk => $vv): ?>
+                                            <li><a href="<?php echo $this->createUrl('news/index',array('id'=>$vv->id)) ?>" class=""><?php echo $vv->name ?></a></li>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <?php
+                                        $criteria = new CDbCriteria();
+                                        $criteria->compare('cate_id', $k);
+                                        $criteria->limit = 10;
+                                        $criteria->order = 'id desc';
+                                        $news_list2 = $news_model->findAll($criteria);
+                                        ?>
+                                        <?php foreach ($news_list2 as $kk => $vv): ?>
+                                            <li><a href="<?php echo $this->createUrl('news/view',array('id'=>$vv->id)) ?>" class=""><?php echo $vv->title ?></a></li>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php $index++; ?>
+                        <?php endforeach; ?>
                     </ul>
                     <a href="#" class="closeDepth2"><img src="/static/images/btn_close.gif" alt="Close"/></a>
                 </div>

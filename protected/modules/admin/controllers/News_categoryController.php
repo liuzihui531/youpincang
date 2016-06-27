@@ -18,15 +18,20 @@ class News_categoryController extends Controller {
     //put your code here
     public function actionIndex() {
         $this->breadcrumbs = array($this->page_name.'管理');
-        $data = NewsCategory::model()->getList();
-        $this->render('index', $data);
+        //$data = NewsCategory::model()->getList();
+        $history_data = NewsCategory::model()->unlimitData();
+        unset($history_data[0]);
+        $this->render('index', array('history_data'=>$history_data));
     }
 
     public function actionCreate() {
         $this->breadcrumbs = array('添加'.$this->page_name);
         $model = new NewsCategory();
         $model->sort = "";
-        $this->render('_form', array('model' => $model));
+        //无限极分类
+        $this->is_upload = true;//用到图片上传
+        $history_data = NewsCategory::model()->unlimitData();
+        $this->render('_form', array('model' => $model,'history_data'=>$history_data));
     }
 
     public function actionUpdate() {
@@ -34,7 +39,10 @@ class News_categoryController extends Controller {
         $id = Yii::app()->request->getParam('id', 0);
         $model = NewsCategory::model()->findByPk($id);
         $this->checkEmpty($model);
-        $this->render('_form', array('model' => $model));
+        //无限极分类
+        $this->is_upload = true;//用到图片上传
+        $history_data = NewsCategory::model()->unlimitData();
+        $this->render('_form', array('model' => $model,'history_data'=>$history_data));
     }
 
     public function actionSave() {
@@ -47,6 +55,8 @@ class News_categoryController extends Controller {
         }
         try {
             $model->attributes = Yii::app()->request->getPost('NewsCategory');
+            $image = Yii::app()->request->getPost('image');
+            $model->image = $image ? implode(",",$image ) : "";
             $model->save();
             if ($model->hasErrors()) {
                 throw new Exception(Utils::getFirstError($model->errors));
@@ -69,5 +79,4 @@ class News_categoryController extends Controller {
             $this->handleResult(0, '操作失败');
         }
     }
-
 }

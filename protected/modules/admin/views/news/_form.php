@@ -22,7 +22,14 @@ $form = $this->beginWidget('CActiveForm', array(
     <?php echo $form->labelEx($model, 'cate_id', array('class' => 'col-sm-3 control-label no-padding-right')) ?>
 
     <div class="col-sm-9">
-        <?php echo $form->dropDownList($model, 'cate_id', News::model()->getCateKv(), array('class' => 'col-xs-10 col-sm-5', 'prompt' => '--请选择分类--')) ?>
+        <?php echo $form->dropDownList($model, 'cate_id', $cate, array('class' => 'col-xs-10 col-sm-5', 'prompt' => '--请选择分类--')) ?>
+    </div>
+</div>
+<div class="form-group">
+    <?php echo $form->labelEx($model, 'type', array('class' => 'col-sm-3 control-label no-padding-right')) ?>
+
+    <div class="col-sm-9">
+        <?php echo $form->dropDownList($model, 'type', News::model()->getType(), array('class' => 'col-xs-10 col-sm-5')) ?>
     </div>
 </div>
 <div class="form-group">
@@ -52,7 +59,7 @@ $form = $this->beginWidget('CActiveForm', array(
         <div id="uploader-demo">
             <!--用来存放item-->
             <div id="fileList" class="uploader-list"></div>
-            <div id="filePicker" data-name="image" data-file-num="2">选择图片</div>
+            <div id="filePicker" data-name="image" data-file-num="100">选择图片</div>
         </div>
         <div class="upload-wrap">
             <?php if ($model->image): ?>

@@ -70,7 +70,7 @@
     // 文件上传成功，给item添加成功class, 用样式标记上传成功。
     uploader.on('uploadSuccess', function (file, response) {
         $('#' + file.id).addClass('upload-state-done');
-        $('#' + file.id).find('img').attr('src', response.domain_url);
+        $('#' + file.id).find('img').attr('src', response.url);
         $('#' + file.id).find('.input-image').val(response.url);
     });
 

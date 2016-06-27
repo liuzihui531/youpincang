@@ -32,6 +32,7 @@
                                 </label>
                             </th>
                             <th>标题</th>
+                            <th>分类</th>
                             <th class="hidden-480">创建时间</th>
 
                             <th></th>
@@ -48,6 +49,7 @@
                                     </label>
                                 </td>
                                 <td><?php echo $v->title ?></td>
+                                <td><?php echo $v->cate->name ?></td>
                                 <td><?php echo date('Y-m-d H:i:s', $v->create_time) ?></td>
                                 <td>
                                     <a href="<?php echo $this->createUrl('update', array('id' => $v->id)) ?>">修改</a>

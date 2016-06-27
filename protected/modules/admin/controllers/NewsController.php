@@ -13,7 +13,7 @@
  */
 class NewsController extends Controller {
 
-    public $page_name = "资讯";
+    public $page_name = "文章";
     
     //put your code here
     public function actionIndex() {
@@ -27,7 +27,9 @@ class NewsController extends Controller {
         $model = new News();
         $this->is_ueditor = true;//用到ueditor编辑器
         $this->is_upload = true;//用到图片上传
-        $this->render('_form', array('model' => $model));
+        $cate = NewsCategory::model()->unlimitData();
+        unset($cate[0]);
+        $this->render('_form', array('model' => $model,'cate'=>$cate));
     }
 
     public function actionUpdate() {
@@ -38,7 +40,9 @@ class NewsController extends Controller {
         $this->is_ueditor = true;//用到ueditor编辑器
         $this->is_upload = true;//用到图片上传
         $model->content = Utils::deSlashes($model->content);
-        $this->render('_form', array('model' => $model));
+        $cate = NewsCategory::model()->unlimitData();
+        unset($cate[0]);
+        $this->render('_form', array('model' => $model,'cate'=>$cate));
     }
 
     public function actionSave() {
@@ -52,7 +56,8 @@ class NewsController extends Controller {
         try {
             $model->attributes = Yii::app()->request->getPost('News');
             $model->content = Utils::enSlashes($model->content);
-            $model->image = implode(",", Yii::app()->request->getPost('image'));
+            $image = Yii::app()->request->getPost('image');
+            $model->image = $image ? implode(",",$image ) : "";
             $model->save();
             if ($model->hasErrors()) {
                 throw new Exception(Utils::getFirstError($model->errors));

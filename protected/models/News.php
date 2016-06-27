@@ -41,6 +41,15 @@ class News extends CActiveRecord {
         $model = $this->findAll($criteria);
         return array('model' => $model, 'pager' => $pager);
     }
+    
+    public function getType(){
+        $return = array(
+            0 => '普通网页',
+            1 => '图片列表',
+            2 => '图片轮播',
+        );
+        return $return;
+    }
 
     /*
      * 获取分类
@@ -72,12 +81,11 @@ class News extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('cate_id, view_count, is_hot, create_time', 'numerical', 'integerOnly' => true),
+            array('type,cate_id, view_count, is_hot, create_time', 'numerical', 'integerOnly' => true),
             array('title', 'length', 'max' => 128),
             array('cate_id,title', 'required'),
             array('summary', 'length', 'max' => 512),
-            array('image', 'length', 'max' => 256),
-            array('content', 'safe'),
+            array('content,image', 'safe'),
             array('seo_title', 'length', 'max' => 64),
             array('seo_keyword', 'length', 'max' => 512),
             array('seo_description', 'safe'),
@@ -94,6 +102,7 @@ class News extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'cate' => array(self::BELONGS_TO,'NewsCategory','cate_id'),
         );
     }
 
@@ -114,6 +123,7 @@ class News extends CActiveRecord {
             'seo_title' => '标题',
             'seo_keyword' => '关键词',
             'seo_description' => '描述',
+            'type' => '类型',
         );
     }
 

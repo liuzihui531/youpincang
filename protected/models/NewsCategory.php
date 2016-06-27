@@ -34,6 +34,24 @@ class NewsCategory extends CActiveRecord {
         return array('model' => $model, 'pager' => $pager);
     }
 
+    public function unlimitData() {
+        $criteria = new CDbCriteria();
+        $criteria->order = 'sort asc';
+        $history_model = NewsCategory::model()->findAll($criteria);
+        $history_data = Utils::getUnLimitClass(Utils::object2array($history_model));
+        //Utils::printr($history_data);
+        $return = array(
+            0 => '--顶级分类--'
+        );
+        foreach ($history_data as $k => $v) {
+            if ($v['level'] > 1) {
+                $v['name'] = $v['html'] . "┗━" . $v['name'];
+            }
+            $return[$v['id']] = $v['name'];
+        }
+        return $return;
+    }
+
     /**
      * @return string the associated database table name
      */
@@ -51,7 +69,7 @@ class NewsCategory extends CActiveRecord {
             array('pid, sort, created', 'numerical', 'integerOnly' => true),
             array('name, seo_title', 'length', 'max' => 64),
             array('seo_keyword', 'length', 'max' => 512),
-            array('seo_description', 'safe'),
+            array('seo_description,image', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, name, pid, sort, created, seo_title, seo_keyword, seo_description', 'safe', 'on' => 'search'),
@@ -75,12 +93,13 @@ class NewsCategory extends CActiveRecord {
         return array(
             'id' => 'ID',
             'name' => '新闻类名称',
-            'pid' => 'Pid',
+            'pid' => '上级分类',
             'sort' => '排序',
             'created' => 'Created',
             'seo_title' => '标题',
             'seo_keyword' => '关键词',
             'seo_description' => '描述',
+            'image' => '图片',
         );
     }
 

@@ -174,7 +174,7 @@ window.jQuery || document.write("<script src='<?php echo Yii::app()->params['hos
                         <li <?php if (in_array($controller_id, array('news_category', 'news'))): ?>class="active open"<?php endif; ?>>
                             <a href="#" class="dropdown-toggle">
                                 <i class="icon-edit"></i>
-                                <span class="menu-text"> 新闻资讯 </span>
+                                <span class="menu-text"> 文章管理 </span>
 
                                 <b class="arrow icon-angle-down"></b>
                             </a>
@@ -190,7 +190,7 @@ window.jQuery || document.write("<script src='<?php echo Yii::app()->params['hos
                                 <li <?php if ($controller_id == 'news'): ?>class="active"<?php endif; ?>>
                                     <a <?php if ($controller_id == 'news'): ?>class="active"<?php endif; ?> href="<?php echo $this->createUrl('/admin/news') ?>">
                                         <i class="icon-double-angle-right"></i>
-                                        资讯管理
+                                        文章管理
                                     </a>
                                 </li>
                             </ul>
