@@ -8,6 +8,7 @@
         <link href="/static/images/common.css" rel="stylesheet" type="text/css">
         <link href="/static/images/select.css" rel="stylesheet" type="text/css">
         <link href="/static/images/style.css" rel="stylesheet" type="text/css">
+        <link href="/static/images/jquery.ui.theme.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="/static/images/jquery-1.5.1.min.js"></script>
         <script type="text/javascript" src="/static/images/jquery.ui.core.js"></script>
         <script type="text/javascript" src="/static/images/function.js"></script>
@@ -27,16 +28,16 @@
         ?>
         <div id="header" class="gnbNavi" >
             <div id="gnb" style="width:1200px">
-                <h1 style="position:absolute;z-index:4;top:16px;"><a href="index.php"><img src="/static/images/logo.png" alt="MiniSo"></a></h1>
+                <h1 style="position:absolute;z-index:4;top:16px;"><a href="<?php echo $this->createAbsoluteUrl('/') ?>"><img src="/static/images/logo.png" alt="MiniSo"></a></h1>
                 <div id="navigation" style="padding-left:427px;width:773px">
                     <ul class="depth1Ul">
                         <li class="depth1">
-                            <a href="index.php" class="menu1"><img src="/static/images/gnb_1_off.gif" alt="Home"/></a>
+                            <a href="<?php echo $this->createAbsoluteUrl('/') ?>" class="menu1"><img src="/static/images/gnb_1_off.gif" alt="Home"/></a>
                         </li>
                         <?php $index = 2; ?>
                         <?php foreach ($this->top_nav as $k => $v): ?>
                             <li class="depth1">
-                                <a href="#" class="menu1"><img src="/static/images/gnb_<?php echo $index; ?>_off.gif" alt="Brand" /></a>
+                                <a href="<?php echo $this->createUrl('/news/index',array('id'=>$k)) ?>" class="menu1"><img src="/static/images/gnb_<?php echo $index; ?>_off.gif" alt="Brand" /></a>
                                 <ul class="depth2Ul depth2Menu2" style="left:0; text-indent:">
                                     <?php if ($k == $this->news_id): ?>
                                         <?php foreach ($news_list as $kk => $vv): ?>
@@ -71,10 +72,12 @@
         <!-- footer -->
         <div id="footer" class="footerArea">
             <div class="inner" style="width:1200px;">
-                <div class="footer_right" style="top:5px;"><img src="/static/images/footerlogo.jpg" alt="MINISO" ></div>		
+                <div class="footer_right" style="top:5px;"><img src="<?php echo Setting::model()->getSetting('wechat') ?>" alt="MINISO" ></div>		
                 <div class="clfix">
-                    <p style="margin-top:10px"><a target="_blank" href="http://www.miibeian.gov.cn/">粤ICP备14059779号 </a> </p>
-                    <p style="margin-top:10px">广东葆鸣贸易有限公司 </p>
+                    <p style="margin-top:10px">版权所有：<?php echo Setting::model()->getSetting('banquan') ?> </p>
+                    <p style="margin-top:10px">地址：<?php echo Setting::model()->getSetting('address') ?> </p>
+                    <p style="margin-top:10px">联系热线：<?php echo Setting::model()->getSetting('phone') ?> </p>
+                    <p style="margin-top:10px"><a target="_blank" href="http://www.miibeian.gov.cn/"><?php echo Setting::model()->getSetting('beian') ?> </a> </p>
                 </div>
             </div>
         </div>

@@ -23,14 +23,19 @@ class News extends CActiveRecord {
      * @param type $pageSize
      * @return type
      */
-    public function getList($platform = 'admin', $show_page = true, $pageSize = 10) {
-        $criteria = new CDbCriteria();
+    public function getList($platform = 'admin', $show_page = true, $pageSize = 10,$criteria = null) {
+        if(!$criteria){
+            $criteria = new CDbCriteria();
+        }
         //搜索项
         $title = Yii::app()->request->getParam('title', '');
         if ($title) {
             $criteria->addSearchCondition('title', $title);
         }
         if ($platform == 'admin') {
+            
+        }
+        if($platform == 'index'){
             
         }
         $pager = new CPagination($this->count($criteria));
@@ -44,9 +49,11 @@ class News extends CActiveRecord {
     
     public function getType(){
         $return = array(
-            0 => '普通网页',
+            0 => '两侧网页，如“品牌”页',
             1 => '图片列表',
             2 => '图片轮播',
+            3 => '新闻页面',
+            4 => '整张网页，如“联系我们”页'
         );
         return $return;
     }

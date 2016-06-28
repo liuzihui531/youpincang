@@ -1139,4 +1139,13 @@ class Utils {
         return $return;
     }
 
+     /**
+     * 将二维数组的某个值如id的值作为上级数组的key
+     * @param type $items
+     * @param type $key
+     * @return type
+     */
+    public static function getSubColumnValueToParentKey($items, $key) {
+        return array_combine(array_column($items, $key), $items);
+    }
 }

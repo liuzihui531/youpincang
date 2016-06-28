@@ -1,31 +1,41 @@
 <?php
 
 /**
- * This is the model class for table "news_category".
+ * This is the model class for table "index_image".
  *
- * The followings are the available columns in table 'news_category':
+ * The followings are the available columns in table 'index_image':
  * @property integer $id
- * @property string $name
- * @property integer $pid
- * @property integer $sort
+ * @property integer $type
+ * @property string $image
+ * @property string $url
+ * @property integer $sorting
  * @property integer $created
- * @property string $seo_title
- * @property string $seo_keyword
- * @property string $seo_description
  */
-class NewsCategory extends CActiveRecord {
+class IndexImage extends CActiveRecord {
 
-    public $cateKey = 'newcategory';
-    public function getList($platform = 'admin', $show_page = true, $pageSize = 10) {
-        $criteria = new CDbCriteria();
+    /**
+     * 获取新闻列表
+     * @param type $platform
+     * @param type $show_page
+     * @param type $pageSize
+     * @return type
+     */
+    public function getList($platform = 'admin', $show_page = true, $pageSize = 10, $criteria = null) {
+        if (!$criteria) {
+            $criteria = new CDbCriteria();
+        }
+        //搜索项
+        $title = Yii::app()->request->getParam('title', '');
+        if ($title) {
+            $criteria->addSearchCondition('title', $title);
+        }
         if ($platform == 'admin') {
+            $type = Yii::app()->request->getParam('type',0);
+            $criteria->compare('type', $type);
+        }
+        if ($platform == 'index') {
             
         }
-        $name = Yii::app()->request->getParam('name', '');
-        if ($name) {
-            $criteria->addSearchCondition('name', $name);
-        }
-        $criteria->order = "sort asc";
         $pager = new CPagination($this->count($criteria));
         if ($show_page) {
             $pager->pageSize = $pageSize;
@@ -35,44 +45,19 @@ class NewsCategory extends CActiveRecord {
         return array('model' => $model, 'pager' => $pager);
     }
 
-    public function unlimitData() {
-        $history_data = $this->getCache();
-        //Utils::printr($history_data);
+    public function getType() {
         $return = array(
-            0 => '--顶级分类--'
+            0 => '大图列表',
+            1 => '小图列表',
         );
-        foreach ($history_data as $k => $v) {
-            if ($v['level'] > 1) {
-                $v['name'] = $v['html'] . "┗━" . $v['name'];
-            }
-            $return[$v['id']] = $v['name'];
-        }
         return $return;
-    }
-    
-    public function getCache(){
-        $cate = Yii::app()->cache->get($this->cateKey);
-        if(!$cate){
-            $cate = $this->setCache();
-        }
-        return $cate;
-    }
-    
-    public function setCache(){
-        $criteria = new CDbCriteria();
-        $criteria->order = 'sort asc';
-        $model = NewsCategory::model()->findAll($criteria);
-        $cate = Utils::getUnLimitClass(Utils::object2array($model));
-        $cate = Utils::getSubColumnValueToParentKey($cate, 'id');
-        Yii::app()->cache->set($this->cateKey, $cate);
-        return $cate;
     }
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'news_category';
+        return 'index_image';
     }
 
     /**
@@ -82,13 +67,13 @@ class NewsCategory extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('pid, sort, created', 'numerical', 'integerOnly' => true),
-            array('name, seo_title', 'length', 'max' => 64),
-            array('seo_keyword', 'length', 'max' => 512),
-            array('seo_description,image', 'safe'),
+            array('type, sorting, created', 'numerical', 'integerOnly' => true),
+            array('image', 'length', 'max' => 128),
+            array('name', 'length', 'max' => 64),
+            array('url', 'length', 'max' => 512),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, name, pid, sort, created, seo_title, seo_keyword, seo_description', 'safe', 'on' => 'search'),
+            array('id, type, image, url, sorting, created', 'safe', 'on' => 'search'),
         );
     }
 
@@ -108,14 +93,12 @@ class NewsCategory extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'name' => '新闻类名称',
-            'pid' => '上级分类',
-            'sort' => '排序',
-            'created' => 'Created',
-            'seo_title' => '标题',
-            'seo_keyword' => '关键词',
-            'seo_description' => '描述',
+            'type' => '0 大图，1小图',
             'image' => '图片',
+            'url' => '地址',
+            'sorting' => '排序',
+            'name' => '名称',
+            'created' => 'Created',
         );
     }
 
@@ -137,13 +120,11 @@ class NewsCategory extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('name', $this->name, true);
-        $criteria->compare('pid', $this->pid);
-        $criteria->compare('sort', $this->sort);
+        $criteria->compare('type', $this->type);
+        $criteria->compare('image', $this->image, true);
+        $criteria->compare('url', $this->url, true);
+        $criteria->compare('sorting', $this->sorting);
         $criteria->compare('created', $this->created);
-        $criteria->compare('seo_title', $this->seo_title, true);
-        $criteria->compare('seo_keyword', $this->seo_keyword, true);
-        $criteria->compare('seo_description', $this->seo_description, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -154,7 +135,7 @@ class NewsCategory extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return NewsCategory the static model class
+     * @return IndexImage the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

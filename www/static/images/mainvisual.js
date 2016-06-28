@@ -199,7 +199,7 @@ function changeImageOrigin() {
                 $(this).animate({"top": myOriginTop + 1000}, 500);
             });
 
-            $(".mainVisualUl li").eq(nextIndex).show();
+            $(".mainVisualUl li").eq(nextIndex).show().siblings("li").hide();//lzh edit
 
             $(".mainVisualUl li").eq(nextIndex).find("> img").each(function () {
                 var myOriginLeft = Number($(this).attr("myOriginLeft"));

@@ -195,7 +195,36 @@ window.jQuery || document.write("<script src='<?php echo Yii::app()->params['hos
                                 </li>
                             </ul>
                         </li>
+                        <li <?php if (in_array($controller_id, array('index_image'))): ?>class="active open"<?php endif; ?>>
+                            <a href="#" class="dropdown-toggle">
+                                <i class="icon-edit"></i>
+                                <span class="menu-text"> 首页设置 </span>
 
+                                <b class="arrow icon-angle-down"></b>
+                            </a>
+
+                            <ul class="submenu">
+                                <li <?php if ($controller_id == 'index_image'): ?>class="active"<?php endif; ?>>
+                                    <a <?php if ($controller_id == 'index_image'): ?>class="active"<?php endif; ?> href="<?php echo $this->createUrl('/admin/index_image', array('type' => 0)) ?>">
+                                        <i class="icon-double-angle-right"></i>
+                                        大图列表
+                                    </a>
+                                </li>
+
+                                <li <?php if ($controller_id == 'index_image'): ?>class="active"<?php endif; ?>>
+                                    <a <?php if ($controller_id == 'index_image'): ?>class="active"<?php endif; ?> href="<?php echo $this->createUrl('/admin/index_image', array('type' => 1)) ?>">
+                                        <i class="icon-double-angle-right"></i>
+                                        小图列表
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li <?php if ($controller_id == 'setting'): ?>class="active"<?php endif; ?>> 
+                            <a href="<?php echo $this->createUrl('/admin/setting') ?>">
+                                <i class="icon-picture"></i>
+                                <span class="menu-text"> 系统设置 </span>
+                            </a>
+                        </li>
                     </ul><!-- /.nav-list -->
 
                     <div class="sidebar-collapse" id="sidebar-collapse">
