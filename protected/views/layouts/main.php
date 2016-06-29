@@ -72,7 +72,10 @@
         <!-- footer -->
         <div id="footer" class="footerArea">
             <div class="inner" style="width:1200px;">
-                <div class="footer_right" style="top:5px;"><img src="<?php echo Setting::model()->getSetting('wechat') ?>" alt="MINISO" ></div>		
+                <div class="footer_right" style="top:5px;text-align: center">
+                    <img src="<?php echo Setting::model()->getSetting('wechat') ?>" alt="MINISO" >
+                    <div style="font-size: 14px;font-weight: bold">扫描二维码进入商城</div>
+                </div>		
                 <div class="clfix">
                     <p style="margin-top:10px">版权所有：<?php echo Setting::model()->getSetting('banquan') ?> </p>
                     <p style="margin-top:10px">地址：<?php echo Setting::model()->getSetting('address') ?> </p>
